@@ -3,278 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nikhil B | Robotics Simulation & Virtual Commissioning Engineer</title>
+  <title>NIKHIL | Robotics Simulation &amp; TwinCAT Controls Engineer</title>
+  
+  <!-- Kinematic Hex-N ⬡ Inline SVG Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpolygon points='20,2 36,11 36,29 20,38 4,29 4,11' stroke='%2300f0ff' stroke-width='3' fill='%23050811'/%3E%3Cpath d='M12 28 V12 L28 28 V12' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='28' cy='12' r='3.5' fill='%2300f0ff'/%3E%3C/svg%3E">
+
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="#hero" class="logo">NIKHIL<span>.B</span></a>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact" class="nav-btn">Contact</a></li>
-      </ul>
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">&#9776;</button>
+  <!-- =========================================================
+       AWWWARDS SYSTEM BOOT PRELOADER
+       ========================================================= -->
+  <div id="preloader">
+    <div class="preloader-shutter shutter-top"></div>
+    <div class="preloader-shutter shutter-bottom"></div>
+    
+    <div class="preloader-content">
+      <div class="preloader-hex-logo">
+        <svg width="48" height="48" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#00f0ff" stroke-width="2.5" fill="rgba(0, 240, 255, 0.08)"/>
+          <path d="M12 28 V12 L28 28 V12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="12" r="3.2" fill="#00f0ff"/>
+        </svg>
+      </div>
+      <div class="preloader-counter" id="loader-num">000%</div>
+      <div class="preloader-terminal-line" id="loader-log">SYSTEM CALIBRATION IN PROGRESS...</div>
+      <div class="preloader-bar-track">
+        <div class="preloader-bar-fill" id="loader-fill"></div>
+      </div>
     </div>
-  </nav>
+  </div>
 
-  <!-- Hero Section -->
-  <header id="hero" class="hero-section">
-    <div class="container hero-content">
-      <span class="badge">Robotics Simulation & Virtual Commissioning</span>
-      <h1>Engineering Automated & Dynamic Digital Twins</h1>
-      <p class="hero-subtitle">
-        Trainee Engineer at <strong>Creative Synergies Group</strong> specializing in 
-        <strong>Automotive Body-in-White (BIW)</strong> simulation, <strong>Siemens Process Simulate</strong>, 
-        <strong>DELMIA</strong>, and <strong>Beckhoff TwinCAT</strong> PLC control.
-      </p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Explore Work</a>
-        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-box">
-          <h3>BIW</h3>
-          <p>Robotic Simulation</p>
-        </div>
-        <div class="stat-box">
-          <h3>PLC</h3>
-          <p>TwinCAT 3 Controls</p>
-        </div>
-        <div class="stat-box">
-          <h3>Digital Twin</h3>
-          <p>Virtual Commissioning</p>
-        </div>
-      </div>
+  <!-- =========================================================
+       CONTEXTUAL MAGNETIC DUAL CURSOR
+       ========================================================= -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring">
+    <span id="cursor-label"></span>
+  </div>
+
+  <!-- =========================================================
+       TOP EDITORIAL HUD
+       ========================================================= -->
+  <header class="top-hud">
+    <div class="hud-brand" data-cursor="hover">
+      <!-- Kinematic Hex-N Logo -->
+      <svg class="brand-logo-svg" width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#00f0ff" stroke-width="2.5" fill="rgba(0, 240, 255, 0.08)"/>
+        <path d="M12 28 V12 L28 28 V12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="28" cy="12" r="3.2" fill="#00f0ff"/>
+      </svg>
+      <span class="brand-text">NIKHIL</span>
+    </div>
+    
+    <div class="hud-geo-stamp">
+      <span class="pulse-dot"></span>
+      <span class="geo-text">BLR // 12.9716° N, 77.5946° E</span>
+      <span class="live-clock" id="live-clock">--:--:-- IST</span>
+    </div>
+
+    <nav class="hud-nav-links">
+      <a href="#hero" class="nav-link" data-cursor="hover">3D ROBOT</a>
+      <a href="#interactive-lab" class="nav-link" data-cursor="hover">TWINCAT LAB</a>
+      <a href="#journey" class="nav-link" data-cursor="hover">JOURNEY</a>
+      <a href="#contact" class="nav-link" data-cursor="hover">CONTACT</a>
+    </nav>
+
+    <div class="hud-actions">
+      <button class="hud-btn" id="resume-open-btn" data-cursor="hover">📄 VIEW RESUME</button>
+      <a href="https://www.linkedin.com/in/nikhil-b-49607028b" target="_blank" class="hud-btn linkedin-btn" data-cursor="hover">LINKEDIN</a>
     </div>
   </header>
 
-  <!-- About Section -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2 class="section-title">About Me</h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>
-            I am a Mechatronics Engineering graduate with a passion for industrial automation, kinematic modeling, and digital manufacturing. Currently at <strong>Creative Synergies Group</strong>, I specialize in automotive manufacturing simulation, multi-robot welding cell reachability, and virtual commissioning.
-          </p>
-          <p>
-            My engineering capability bridges the virtual and physical world: from 3D mechanical tooling in <strong>Siemens NX, CATIA, and SolidWorks</strong>, to line simulation in <strong>Process Simulate & DELMIA</strong>, all the way down to real-time PLC logic programming using <strong>TwinCAT (IEC 61131-3)</strong>.
-          </p>
-          <div class="about-highlights">
-            <div class="highlight-item">🏆 Awarded <strong>Best Intern</strong> at AB Plastomech</div>
-            <div class="highlight-item">🎓 B.E. Mechatronics Engineering (80% Aggregate)</div>
-            <div class="highlight-item">📍 Based in Bengaluru, Karnataka, India</div>
-          </div>
-        </div>
+  <!-- =========================================================
+       HERO VIEWPORT (3D ROBOT + AERO TELEMETRY DOCK)
+       ========================================================= -->
+  <section class="hero-viewport" id="hero">
+    <!-- 3D WebGL Canvas Layer -->
+    <div id="canvas-container" data-cursor="drag"></div>
+
+    <!-- Editorial Left Typography Overlay -->
+    <div class="hero-editorial-wrap">
+      <div class="meta-tag-line">
+        <span class="crosshair-marker">+</span>
+        <span class="engineer-badge">ROBOTICS SIMULATION &amp; PLC AUTOMATION ENGINEER</span>
       </div>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="section bg-alt">
-    <div class="container">
-      <h2 class="section-title">Technical Expertise</h2>
-      <p class="section-desc">Tools and engineering disciplines applied across production-grade robotics and control environments.</p>
-      
-      <div class="skills-grid">
-        <div class="skill-card">
-          <div class="skill-icon">🤖</div>
-          <h3>Simulation & Commissioning</h3>
-          <ul>
-            <li>Siemens Process Simulate</li>
-            <li>Dassault Systèmes DELMIA</li>
-            <li>Virtual Commissioning (SiL)</li>
-            <li>RobotStudio (ABB)</li>
-            <li>Kinematic Modeling & Collision Checks</li>
-          </ul>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-icon">⚡</div>
-          <h3>PLC & Automation Controls</h3>
-          <ul>
-            <li>Beckhoff TwinCAT 3</li>
-            <li>IEC 61131-3 (Structured Text, Ladder)</li>
-            <li>I/O Signal Mapping</li>
-            <li>Motion Control & Fieldbus</li>
-            <li>Sensors & Actuators Integration</li>
-          </ul>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-icon">📐</div>
-          <h3>CAD & Mechanical Design</h3>
-          <ul>
-            <li>Siemens NX</li>
-            <li>CATIA V5</li>
-            <li>Dassault SolidWorks</li>
-            <li>AutoCAD (GA & Piping Layouts)</li>
-            <li>GD&T & Fixture Design</li>
-          </ul>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-icon">💻</div>
-          <h3>Programming & Domain</h3>
-          <ul>
-            <li>Automotive Body-in-White (BIW)</li>
-            <li>Automated Guided Vehicles (AGVs)</li>
-            <li>C++ & Python</li>
-            <li>Arduino Microcontrollers</li>
-            <li>FANUC & ABB Robot Kinematics</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Experience Section -->
-  <section id="experience" class="section">
-    <div class="container">
-      <h2 class="section-title">Career Experience</h2>
-      
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <span class="timeline-date">Jan 2026 – Present</span>
-            <h3>Trainee Engineer</h3>
-            <h4>Creative Synergies Group • Bengaluru</h4>
-            <p>Perform 3D robotic cell layout simulation for Automotive Body-in-White (BIW) lines in Process Simulate and DELMIA. Lead reachability analysis, weld gun clearance, cycle time studies, and Virtual Commissioning logic mapping with Beckhoff TwinCAT.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <span class="timeline-date">Aug 2025 – Jan 2026</span>
-            <h3>Operations Intern (Data Ops & QA)</h3>
-            <h4>Instawork Services India Pvt Ltd</h4>
-            <p>Promoted across three tiers (Data Ops Associate &rarr; QA Analyst &rarr; Operations Intern). Directed data collection pipelines for robotics and autonomous systems, verifying data quality and tracking strict SLA targets.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <span class="timeline-date">Apr 2025 – Jun 2025</span>
-            <h3>Design Engineer Intern</h3>
-            <h4>Access Automation Pvt Ltd</h4>
-            <p>Developed General Arrangement (GA) drawings and 3D SolidWorks models for Toshiba test benches. Designed piping and electrical layouts for the YME automation test system.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <span class="timeline-date">Sep 2024 – Dec 2024</span>
-            <h3>Robotics & Automation Intern (Awarded "Best Intern")</h3>
-            <h4>AB Plastomech Pvt Ltd</h4>
-            <p>Awarded <strong>Best Intern</strong> for exemplary engineering contribution. Modeled AGVs, anti-static workbenches, and assembly line inspection stations in SolidWorks.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="section bg-alt">
-    <div class="container">
-      <h2 class="section-title">Featured Projects</h2>
-      
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-header">
-            <span class="tag">Digital Twin</span>
-            <span class="tag">TwinCAT</span>
-          </div>
-          <h3>Automated Cell Virtual Commissioning</h3>
-          <p>Structured Text (ST) PLC programming in Beckhoff TwinCAT 3 with Software-in-the-Loop simulation, signal mapping, and kinematic sequence verification.</p>
-          <div class="project-tech">
-            <span>TwinCAT 3</span>
-            <span>IEC 61131-3</span>
-            <span>I/O Mapping</span>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-header">
-            <span class="tag">Robotics</span>
-            <span class="tag">Aerodynamics</span>
-          </div>
-          <h3>Biomimetic Aerial Ornithopter</h3>
-          <p>Designed and built an ultra-lightweight (&lt;900g) flapping-wing drone mimicking avian flight with servo actuation and remote radio stabilization.</p>
-          <div class="project-tech">
-            <span>SolidWorks</span>
-            <span>Servo Actuation</span>
-            <span>Aerodynamics</span>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-header">
-            <span class="tag">Embedded</span>
-            <span class="tag">Sensors</span>
-          </div>
-          <h3>Autonomous Metal-Detecting Rover</h3>
-          <p>Microcontroller-controlled autonomous mobile rover equipped with inductive sensing, obstacle navigation algorithms, and real-time wireless telemetry.</p>
-          <div class="project-tech">
-            <span>Arduino</span>
-            <span>C++</span>
-            <span>Sensor Fusion</span>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-header">
-            <span class="tag">CAD Design</span>
-            <span class="tag">Material Handling</span>
-          </div>
-          <h3>Automated Guided Vehicle (AGV) Chassis</h3>
-          <p>Complete mechanical modeling and structural load distribution design for factory AGVs and industrial inspection benches.</p>
-          <div class="project-tech">
-            <span>SolidWorks</span>
-            <span>Siemens NX</span>
-            <span>Fabrication GA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="section">
-    <div class="container contact-container">
-      <h2 class="section-title">Let's Connect</h2>
-      <p class="section-desc">Open for discussions regarding Robotics Simulation, Virtual Commissioning, and Industrial Automation engineering roles.</p>
-      
-      <div class="contact-details">
-        <a href="mailto:nikhilbahaddur9611@gmail.com" class="contact-link">
-          <span class="icon">✉</span> nikhilbahaddur9611@gmail.com
+      <h1 class="editorial-headline">
+        <span>AUTOMOTIVE BIW</span>
+        <span class="cyan-accent">SIMULATION &amp;</span>
+        <span>TWINCAT CONTROLS</span>
+      </h1>
+      <p class="hero-subtext">
+        Engineering 6-Axis Spot Welding Kinematics, Gun Clearance Studies, and Beckhoff PLC Real-Time Industrial Control Systems.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#interactive-lab" class="btn-primary-aero" data-cursor="hover">
+          <span>TEST PLC SIMULATOR</span>
+          <span class="btn-arrow">&darr;</span>
         </a>
-        <a href="tel:+919611253586" class="contact-link">
-          <span class="icon">📞</span> +91 9611253586
-        </a>
-        <a href="https://www.linkedin.com/in/nikhil-b-49607028b" target="_blank" class="contact-link">
-          <span class="icon">💼</span> LinkedIn Profile
+        <a href="#journey" class="btn-secondary-aero" data-cursor="hover">
+          <span>CAREER JOURNEY</span>
+          <span class="btn-arrow">&darr;</span>
         </a>
       </div>
     </div>
+
+    <!-- Right Floating Glass Telemetry Dock (Unitree-Style) -->
+    <div class="telemetry-glass-dock" data-cursor="dock">
+      <div class="dock-header">
+        <span class="dock-title">// 3D KINEMATICS DOCK</span>
+        <span class="dock-badge">ACTIVE [60 FPS]</span>
+      </div>
+
+      <div class="dock-metric-grid">
+        <div class="metric-cell">
+          <label>CYCLE TIME</label>
+          <span id="cycle-display">0.00 s</span>
+        </div>
+        <div class="metric-cell">
+          <label>TOOL CLASH</label>
+          <span class="status-pass" id="clash-display">0 COLLISION</span>
+        </div>
+        <div class="metric-cell full-width">
+          <label>STAGE STATUS</label>
+          <span id="stage-display">IDLE // HOME READY</span>
+        </div>
+      </div>
+
+      <div class="dock-action-btns">
+        <button class="dock-btn btn-weld" id="btn-weld-cycle" data-cursor="hover">
+          ⚡ RUN SPOT WELD CYCLE
+        </button>
+        <button class="dock-btn btn-reset" id="btn-reset-robot" data-cursor="hover">
+          ↺ HOME POSITION
+        </button>
+      </div>
+
+      <!-- Axis Jog Sliders -->
+      <div class="dock-sliders">
+        <div class="slider-row">
+          <span>BASE (J1)</span>
+          <input type="range" id="slider-j1" min="-180" max="180" value="0" />
+        </div>
+        <div class="slider-row">
+          <span>SHOULDER (J2)</span>
+          <input type="range" id="slider-j2" min="-45" max="65" value="15" />
+        </div>
+        <div class="slider-row">
+          <span>ELBOW (J3)</span>
+          <input type="range" id="slider-j3" min="-60" max="60" value="-20" />
+        </div>
+      </div>
+      <div class="dock-footnote">Click &amp; drag 3D view to orbit // Adjust sliders to jog</div>
+    </div>
   </section>
+
+  <!-- =========================================================
+       SECTION: TWINCAT 3 PLC WORKBENCH
+       ========================================================= -->
+  <section id="interactive-lab" class="section lab-section">
+    <div class="container">
+      <div class="section-meta-header">
+        <span class="coord-label">// SEC 02 : CONTROLS ARCHITECTURE</span>
+        <span class="crosshair-marker">+</span>
+      </div>
+      <h2 class="section-title">Beckhoff TwinCAT 3 Control Engine</h2>
+      <p class="section-sub">Interact with the CX5120 terminal below. Toggle digital inputs to evaluate real-time IEC 61131-3 Structured Text logic.</p>
+
+      <div class="lab-layout-grid">
+        <!-- Terminal Rack Column -->
+        <div class="hardware-card">
+          <div class="card-hairline-header">
+            <span class="beckhoff-logo">BECKHOFF</span>
+            <span class="cx-tag">CX5120 // EtherCAT Master</span>
+            <span class="plc-run-badge">● RUN</span>
+          </div>
+
+          <div class="terminal-body">
+            <h4>DIGITAL INPUTS (KL1008 Slice)</h4>
+            <div class="switch-row">
+              <label class="switch-label" data-cursor="toggle">
+                <input type="checkbox" id="plc-in-0" checked onchange="updatePlcSimulation()" />
+                <span class="switch-slider"></span>
+                <span class="label-text">%IX0.0 Part Clamped</span>
+              </label>
+            </div>
+            <div class="switch-row">
+              <label class="switch-label" data-cursor="toggle">
+                <input type="checkbox" id="plc-in-1" checked onchange="updatePlcSimulation()" />
+                <span class="switch-slider"></span>
+                <span class="label-text">%IX0.1 Safety Light Curtain Clear</span>
+              </label>
+            </div>
+            <div class="switch-row">
+              <label class="switch-label" data-cursor="toggle">
+                <input type="checkbox" id="plc-in-2" onchange="updatePlcSimulation()" />
+                <span class="switch-slider"></span>
+                <span class="label-text">%IX0.2 Cycle Start Pushbutton</span>
+              </label>
+            </div>
+
+            <div class="hairline-divider"></div>
+
+            <h4>DIGITAL OUTPUTS (KL2008 Slice)</h4>
+            <div class="led-indicator" id="led-out-0">
+              <span class="led-dot"></span>
+              <span>%QX0.0 Robot Interlock Permissive</span>
+            </div>
+            <div class="led-indicator" id="led-out-1">
+              <span class="led-dot"></span>
+              <span>%QX0.1 Weld Gun Solenoid Energize</span>
+            </div>
+            <div class="led-indicator" id="led-out-2">
+              <span class="led-dot"></span>
+              <span>%QX0.2 Cycle In-Progress Horn</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Structured Text Code Column -->
+        <div class="st-code-card">
+          <div class="st-header">
+            <span>MAIN.PRG [Structured Text Engine]</span>
+            <span class="task-time">PLC Task: 1.0ms</span>
+          </div>
+          <pre class="st-code"><code><span class="cmt">// Industrial Safety &amp; Cycle Permissive Logic</span>
+<span class="kw">IF</span> (<span class="var" id="st-part">bPartClamped</span> <span class="kw">AND</span> <span class="var" id="st-safety">bSafetyClear</span>) <span class="kw">THEN</span>
+  <span class="var" id="st-interlock">bRobotInterlock</span> := <span class="val">TRUE</span>;
+  
+  <span class="cmt">// Sequence Activation</span>
+  <span class="kw">IF</span> <span class="var" id="st-start">bCycleStartReq</span> <span class="kw">THEN</span>
+    <span class="var" id="st-weld">bWeldSolenoid</span> := <span class="val">TRUE</span>;
+    <span class="var" id="st-horn">bCycleHorn</span>    := <span class="val">TRUE</span>;
+  <span class="kw">END_IF</span>;
+<span class="kw">ELSE</span>
+  <span class="var">bRobotInterlock</span> := <span class="val">FALSE</span>;
+  <span class="var">bWeldSolenoid</span>   := <span class="val">FALSE</span>;
+<span class="kw">END_IF</span>;</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION: CAREER JOURNEY TIMELINE
+       ========================================================= -->
+  <section id="journey" class="section journey-section">
+    <div class="container">
+      <div class="section-meta-header">
+        <span class="coord-label">// SEC 03 : CHRONOLOGY &amp; EXPERIENCE</span>
+        <span class="crosshair-marker">+</span>
+      </div>
+      <h2 class="section-title">Verified Engineering Progression</h2>
+      <p class="section-sub">Select an operational phase to inspect system deliverables, CAD tooling, and simulation results.</p>
+
+      <div class="journey-editorial-layout">
+        <div class="journey-nav-rail">
+          <button class="rail-item active" onclick="showJourney(0)" data-cursor="hover">
+            <span class="rail-year">2026 – PRESENT</span>
+            <span class="rail-role">Creative Synergies Group</span>
+          </button>
+          <button class="rail-item" onclick="showJourney(1)" data-cursor="hover">
+            <span class="rail-year">2025 – 2026</span>
+            <span class="rail-role">Instawork Ops</span>
+          </button>
+          <button class="rail-item" onclick="showJourney(2)" data-cursor="hover">
+            <span class="rail-year">2025</span>
+            <span class="rail-role">Access Automation</span>
+          </button>
+          <button class="rail-item" onclick="showJourney(3)" data-cursor="hover">
+            <span class="rail-year">2024</span>
+            <span class="rail-role">AB Plastomech [Best Intern]</span>
+          </button>
+          <button class="rail-item" onclick="showJourney(4)" data-cursor="hover">
+            <span class="rail-year">2021 – 2025</span>
+            <span class="rail-role">B.E. Mechatronics</span>
+          </button>
+        </div>
+
+        <div class="journey-stage-display" id="journey-card">
+          <!-- Populated by script.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECTION: CONTACT
+       ========================================================= -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="section-meta-header">
+        <span class="coord-label">// SEC 04 : INITIATE CONTACT</span>
+        <span class="crosshair-marker">+</span>
+      </div>
+      <h2 class="section-title">Let's Connect &amp; Collaborate</h2>
+      <p class="section-sub">Available for opportunities in Automotive BIW Simulation, Virtual Commissioning, and PLC Automation.</p>
+
+      <div class="contact-editorial-grid">
+        <a href="mailto:nikhilbahaddur9611@gmail.com" class="contact-hairline-card" data-cursor="hover">
+          <span class="c-tag">DIRECT EMAIL</span>
+          <span class="c-val">nikhilbahaddur9611@gmail.com</span>
+          <span class="c-action">SEND TRANSMISSION &rarr;</span>
+        </a>
+        <a href="tel:+919611253586" class="contact-hairline-card" data-cursor="hover">
+          <span class="c-tag">TELEPHONE</span>
+          <span class="c-val">+91 9611253586</span>
+          <span class="c-action">CONNECT VOICE &rarr;</span>
+        </a>
+        <a href="https://www.linkedin.com/in/nikhil-b-49607028b" target="_blank" class="contact-hairline-card featured-contact" data-cursor="hover">
+          <span class="c-tag">PROFESSIONAL NETWORK</span>
+          <span class="c-val">linkedin.com/in/nikhil-b-49607028b</span>
+          <span class="c-action">OPEN PROFILE &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       EMBEDDED ATS RESUME MODAL
+       ========================================================= -->
+  <div class="modal-backdrop" id="resume-modal">
+    <div class="modal-card">
+      <div class="modal-nav">
+        <h3>NIKHIL // ATS-VERIFIED RESUME</h3>
+        <div class="modal-btn-group">
+          <button class="hud-btn" onclick="window.print()" data-cursor="hover">🖨️ PRINT / SAVE AS PDF</button>
+          <button class="modal-close" id="resume-close-btn" data-cursor="hover">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body-resume">
+        <iframe src="resume.html" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
-  <footer>
-    <div class="container footer-content">
-      <p>&copy; 2026 Nikhil B. Hosted on GitHub Pages.</p>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <span class="foot-left">&copy; 2026 Nikhil. Hex-N Kinematic Architecture.</span>
+      <span class="foot-center">Awwwards-Caliber Precision Engineering</span>
+      <a href="#hero" class="foot-back-top" data-cursor="hover">BACK TO TOP &uarr;</a>
     </div>
   </footer>
 
