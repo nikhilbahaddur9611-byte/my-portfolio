@@ -410,8 +410,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========================================================
-   6. JOURNEY DATA
+   6. JOURNEY DATA & MOBILE INTERACTIVE CONTROLLER
    ========================================================= */
+let currentJourneyIndex = 0;
+
 const journeyData = [
   {
     title: "Trainee Engineer",
@@ -423,7 +425,7 @@ const journeyData = [
     title: "Operations Intern (Robotics Data & QA)",
     company: "Instawork Services India Pvt Ltd",
     period: "Aug 2025 – Jan 2026",
-    details: "Promoted across 3 operational tiers: Data Operations Associate in Robotics → Quality Analyst (QA) → Operations Intern. Managed spatial & robotic data collection pipelines, enforced quality compliance, and tracked daily SLA targets."
+    details: "Promoted across 3 operational tiers: Data Operations Associate in Robotics → Quality Analyst (QA) → Operations Intern. Directed spatial & robotic data collection pipelines, enforced quality compliance, and tracked daily SLA targets."
   },
   {
     title: "Design Engineer Intern",
@@ -446,18 +448,48 @@ const journeyData = [
 ];
 
 function showJourney(idx) {
+  currentJourneyIndex = idx;
   const data = journeyData[idx];
   const card = document.getElementById('journey-card');
+  const indicator = document.getElementById('journey-step-indicator');
+  const buttons = document.querySelectorAll('.rail-item');
+
   if (!card) return;
 
+  // Clean, responsive markup (no hardcoded inline font sizes!)
   card.innerHTML = `
-    <span class="rail-year">${data.period}</span>
-    <h3 style="font-size: 1.8rem; margin: 6px 0;">${data.title}</h3>
-    <h4 style="color: var(--cyan-primary); font-family: var(--font-mono); margin-bottom: 16px;">${data.company}</h4>
-    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">${data.details}</p>
+    <span class="journey-card-period">${data.period}</span>
+    <h3 class="journey-card-title">${data.title}</h3>
+    <h4 class="journey-card-company">${data.company}</h4>
+    <p class="journey-card-desc">${data.details}</p>
   `;
 
-  document.querySelectorAll('.rail-item').forEach((btn, i) => {
+  // Update active button state
+  buttons.forEach((btn, i) => {
     btn.classList.toggle('active', i === idx);
   });
+
+  // Update mobile step indicator
+  if (indicator) {
+    indicator.innerText = `${idx + 1} / ${journeyData.length}`;
+  }
+
+  // Auto-scroll the active rail tab into view smoothly on mobile
+  if (buttons[idx]) {
+    buttons[idx].scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest'
+    });
+  }
+}
+
+function prevJourney() {
+  const newIndex = (currentJourneyIndex - 1 + journeyData.length) % journeyData.length;
+  showJourney(newIndex);
+}
+
+function nextJourney() {
+  const newIndex = (currentJourneyIndex + 1) % journeyData.length;
+  showJourney(newIndex);
 }

@@ -151,7 +151,7 @@
   </section>
 
  <!-- =========================================================
-       SECTION: CAREER JOURNEY & EXPERIENCE
+       SECTION: CAREER JOURNEY & EXPERIENCE (MOBILE FIXED)
        ========================================================= -->
   <section id="experience" class="section journey-section">
     <div class="container">
@@ -160,44 +160,45 @@
 
       <div class="journey-editorial-layout scroll-reveal">
         <div class="journey-rail-wrapper">
-          <div class="journey-nav-rail">
+          <div class="journey-nav-rail" id="journey-nav-rail">
             <button class="rail-item active" onclick="showJourney(0)" data-cursor="hover">
               <span class="rail-year">2026 – PRESENT</span>
-              <span class="rail-role">Creative Synergies Group</span>
+              <span class="rail-role">Creative Synergies</span>
               <span class="rail-sub">Trainee Engineer</span>
             </button>
             <button class="rail-item" onclick="showJourney(1)" data-cursor="hover">
               <span class="rail-year">2025 – 2026</span>
               <span class="rail-role">Instawork Services</span>
-              <span class="rail-sub">Robotics Operations &amp; QA</span>
+              <span class="rail-sub">Robotics Ops &amp; QA</span>
             </button>
             <button class="rail-item" onclick="showJourney(2)" data-cursor="hover">
               <span class="rail-year">2025</span>
               <span class="rail-role">Access Automation</span>
-              <span class="rail-sub">Design Engineer Intern</span>
+              <span class="rail-sub">Design Intern</span>
             </button>
             <button class="rail-item" onclick="showJourney(3)" data-cursor="hover">
               <span class="rail-year">2024</span>
               <span class="rail-role">AB Plastomech</span>
-              <span class="rail-sub">Awarded "Best Intern"</span>
+              <span class="rail-sub">Best Intern Award</span>
             </button>
             <button class="rail-item" onclick="showJourney(4)" data-cursor="hover">
               <span class="rail-year">2021 – 2025</span>
-              <span class="rail-role">AMC Engineering College</span>
+              <span class="rail-role">AMC College</span>
               <span class="rail-sub">B.E. Mechatronics (80%)</span>
             </button>
           </div>
 
-          <!-- Sleek Mobile Swipe Cue (Hidden on desktop, active on mobile/tablet) -->
-          <div class="mobile-swipe-cue">
-            <span class="swipe-arrow">⟵</span>
-            <span class="swipe-text">SWIPE TIMELINE</span>
-            <span class="swipe-arrow">⟶</span>
+          <!-- Mobile Prev / Next Stepper Bar (Active on Mobile) -->
+          <div class="journey-mobile-stepper">
+            <button class="step-arrow-btn" onclick="prevJourney()" aria-label="Previous Milestone">&larr; PREV</button>
+            <span class="step-indicator" id="journey-step-indicator">1 / 5</span>
+            <button class="step-arrow-btn" onclick="nextJourney()" aria-label="Next Milestone">NEXT &rarr;</button>
           </div>
         </div>
 
+        <!-- The Details Card -->
         <div class="journey-stage-display" id="journey-card">
-          <!-- Populated by script.js -->
+          <!-- Populated dynamically by script.js -->
         </div>
       </div>
     </div>
