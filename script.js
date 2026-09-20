@@ -80,7 +80,6 @@ function initMagneticCursor() {
     });
   });
 
-  // Auto-clear cursor on scroll so label never gets stuck
   window.addEventListener('scroll', () => {
     ring.className = '';
     label.innerText = '';
@@ -115,7 +114,7 @@ function initScrollEngine() {
 }
 
 /* =========================================================
-   4. THREE.JS 3D ROBOT ENGINE
+   4. THREE.JS 3D ROBOT ENGINE (WITH MOBILE THUMB TOUCH!)
    ========================================================= */
 let scene, camera, renderer;
 let baseGroup, j1Group, j2Group, j3Group, weldGun;
@@ -220,6 +219,7 @@ function initThreeScene() {
   panel.position.set(1.8, 0.8, 0);
   scene.add(panel);
 
+  // Desktop Mouse Drag Orbit
   let isDragging = false;
   let prevMouseX = 0;
   let prevMouseY = 0;
@@ -241,6 +241,34 @@ function initThreeScene() {
     prevMouseX = e.clientX;
     prevMouseY = e.clientY;
   });
+
+  // Mobile Thumb Touch Orbit (Enabled!)
+  let isTouching = false;
+  let prevTouchX = 0;
+  let prevTouchY = 0;
+
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isTouching = true;
+      prevTouchX = e.touches[0].clientX;
+      prevTouchY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => { isTouching = false; });
+  window.addEventListener('touchcancel', () => { isTouching = false; });
+
+  container.addEventListener('touchmove', (e) => {
+    if (!isTouching || e.touches.length !== 1) return;
+    const deltaX = e.touches[0].clientX - prevTouchX;
+    const deltaY = e.touches[0].clientY - prevTouchY;
+    
+    scene.rotation.y += deltaX * 0.009;
+    camera.position.y = Math.max(1, Math.min(6, camera.position.y - deltaY * 0.012));
+    
+    prevTouchX = e.touches[0].clientX;
+    prevTouchY = e.touches[0].clientY;
+  }, { passive: true });
 
   window.addEventListener('resize', onWindowResize);
   animate();
@@ -318,7 +346,7 @@ function animate() {
 }
 
 /* =========================================================
-   5. CONTROLS, JOG & MODAL PRINT (FIXED!)
+   5. CONTROLS, JOG & MODAL PRINT
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   initPreloader();
@@ -326,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEngine();
   initThreeScene();
 
-  // Jog sliders
   const sJ1 = document.getElementById('slider-j1');
   const sJ2 = document.getElementById('slider-j2');
   const sJ3 = document.getElementById('slider-j3');
@@ -341,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (j3Group) j3Group.rotation.z = THREE.MathUtils.degToRad(e.target.value);
   });
 
-  // Action Buttons
   const weldBtn = document.getElementById('btn-weld-cycle');
   if (weldBtn) weldBtn.addEventListener('click', () => {
     isWelding = true;
@@ -362,7 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sJ3.value = -20;
   });
 
-  // Modal Resume & Fixed Print (Prints ONLY the resume iframe)
   const modal = document.getElementById('resume-modal');
   const openModal = document.getElementById('resume-open-btn');
   const closeModal = document.getElementById('resume-close-btn');
@@ -376,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const iframe = document.getElementById('resume-iframe');
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.focus();
-        iframe.contentWindow.print(); // Prints ONLY resume.html!
+        iframe.contentWindow.print();
       }
     });
   }
