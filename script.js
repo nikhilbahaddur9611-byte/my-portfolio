@@ -1,3 +1,8 @@
+// Always start at the 1st section (Hero) on load or reload
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
 /* =========================================================
    1. AWWWARDS PRELOADER
    ========================================================= */
@@ -453,10 +458,11 @@ function showJourney(idx) {
   const card = document.getElementById('journey-card');
   const indicator = document.getElementById('journey-step-indicator');
   const buttons = document.querySelectorAll('.rail-item');
+  const rail = document.getElementById('journey-nav-rail');
 
   if (!card) return;
 
-  // Clean, responsive markup (no hardcoded inline font sizes!)
+  // Clean, responsive card markup
   card.innerHTML = `
     <span class="journey-card-period">${data.period}</span>
     <h3 class="journey-card-title">${data.title}</h3>
@@ -469,17 +475,19 @@ function showJourney(idx) {
     btn.classList.toggle('active', i === idx);
   });
 
-  // Update mobile step indicator
+  // Update mobile step indicator (e.g. 1 / 5)
   if (indicator) {
     indicator.innerText = `${idx + 1} / ${journeyData.length}`;
   }
 
-  // Auto-scroll the active rail tab into view smoothly on mobile
-  if (buttons[idx]) {
-    buttons[idx].scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest'
+  // FIX: Only scroll inside the horizontal rail (Never moves the whole page!)
+  if (rail && buttons[idx]) {
+    const btnLeft = buttons[idx].offsetLeft;
+    const btnWidth = buttons[idx].clientWidth;
+    const railWidth = rail.clientWidth;
+    rail.scrollTo({
+      left: btnLeft - (railWidth / 2) + (btnWidth / 2),
+      behavior: 'smooth'
     });
   }
 }
