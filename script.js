@@ -1,5 +1,5 @@
 /* =========================================================
-   1. AWWWARDS SYSTEM BOOT PRELOADER
+   1. AWWWARDS PRELOADER
    ========================================================= */
 function initPreloader() {
   const preloader = document.getElementById('preloader');
@@ -10,15 +10,14 @@ function initPreloader() {
   const logs = [
     "INITIALIZING KINEMATIC SOLVER...",
     "CALIBRATING 6-AXIS INDUSTRIAL ROBOT...",
-    "MOUNTING END-EFFECTOR SPOT WELD GUN...",
-    "SYNCING BECKHOFF TWINCAT 3 I/O RACK...",
-    "CHECKING CLASH DETECTION ENVELOPE...",
-    "SYSTEM CALIBRATION COMPLETE // 100%"
+    "LOADING VERIFIED DELIVERABLES...",
+    "SYNCING BECKHOFF TWINCAT RUNTIME...",
+    "CALIBRATION COMPLETE // 100%"
   ];
 
   let progress = 0;
   const interval = setInterval(() => {
-    progress += Math.floor(Math.random() * 8) + 3;
+    progress += Math.floor(Math.random() * 8) + 4;
     if (progress > 100) progress = 100;
 
     numElem.innerText = progress.toString().padStart(3, '0') + '%';
@@ -33,11 +32,11 @@ function initPreloader() {
         preloader.classList.add('loaded');
       }, 350);
     }
-  }, 45);
+  }, 35);
 }
 
 /* =========================================================
-   2. CONTEXTUAL MAGNETIC PHYSICS CURSOR
+   2. CUSTOM MAGNETIC CURSOR (WITH GLITCH RESET)
    ========================================================= */
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
@@ -55,7 +54,6 @@ function initMagneticCursor() {
     dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
   });
 
-  // Lerp Physics Loop (60-120fps)
   function renderCursor() {
     ringX += (mouseX - ringX) * 0.18;
     ringY += (mouseY - ringY) * 0.18;
@@ -64,16 +62,13 @@ function initMagneticCursor() {
   }
   requestAnimationFrame(renderCursor);
 
-  // Contextual Hover Interactions
   document.querySelectorAll('[data-cursor]').forEach((el) => {
     const type = el.getAttribute('data-cursor');
     el.addEventListener('mouseenter', () => {
       ring.className = '';
       if (type === 'drag') {
         ring.classList.add('cursor-drag');
-        label.innerText = 'DRAG // ORBIT';
-      } else if (type === 'toggle') {
-        ring.classList.add('cursor-toggle');
+        label.innerText = 'ORBIT';
       } else if (type === 'hover') {
         ring.classList.add('cursor-hover');
       }
@@ -84,25 +79,43 @@ function initMagneticCursor() {
       label.innerText = '';
     });
   });
+
+  // Auto-clear cursor on scroll so label never gets stuck
+  window.addEventListener('scroll', () => {
+    ring.className = '';
+    label.innerText = '';
+  });
 }
 
 /* =========================================================
-   3. LIVE BENGALURU IST CLOCK
+   3. SCROLL PROGRESS & REVEAL OBSERVER
    ========================================================= */
-function initLiveClock() {
-  const clockEl = document.getElementById('live-clock');
-  function tick() {
-    const now = new Date();
-    // Indian Standard Time
-    const istTime = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false });
-    if (clockEl) clockEl.innerText = `${istTime} IST`;
-  }
-  setInterval(tick, 1000);
-  tick();
+function initScrollEngine() {
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    if (progressBar) progressBar.style.width = scrollPercent + '%';
+  });
+
+  const revealElements = document.querySelectorAll('.scroll-reveal');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  revealElements.forEach((el) => observer.observe(el));
 }
 
 /* =========================================================
-   4. THREE.JS 3D INDUSTRIAL ROBOT ENGINE
+   4. THREE.JS 3D ROBOT ENGINE
    ========================================================= */
 let scene, camera, renderer;
 let baseGroup, j1Group, j2Group, j3Group, weldGun;
@@ -127,7 +140,6 @@ function initThreeScene() {
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
-  // Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
 
@@ -139,12 +151,10 @@ function initThreeScene() {
   fillLight.position.set(-4, 3, -2);
   scene.add(fillLight);
 
-  // Industrial Grid Floor
   const gridHelper = new THREE.GridHelper(18, 24, 0x00f0ff, 0x1e294b);
   gridHelper.position.y = 0;
   scene.add(gridHelper);
 
-  // Robot Material Definitions
   const metalMaterial = new THREE.MeshStandardMaterial({
     color: 0x1e293b,
     roughness: 0.3,
@@ -156,7 +166,6 @@ function initThreeScene() {
     metalness: 0.9
   });
 
-  // Base Pedestal
   baseGroup = new THREE.Group();
   scene.add(baseGroup);
 
@@ -165,7 +174,6 @@ function initThreeScene() {
   pedestal.position.y = 0.2;
   baseGroup.add(pedestal);
 
-  // J1 Turntable (Yaw)
   j1Group = new THREE.Group();
   j1Group.position.y = 0.4;
   baseGroup.add(j1Group);
@@ -175,7 +183,6 @@ function initThreeScene() {
   j1Body.position.y = 0.3;
   j1Group.add(j1Body);
 
-  // J2 Shoulder (Pitch)
   j2Group = new THREE.Group();
   j2Group.position.set(0, 0.6, 0);
   j1Group.add(j2Group);
@@ -185,7 +192,6 @@ function initThreeScene() {
   j2Arm.position.y = 0.9;
   j2Group.add(j2Arm);
 
-  // J3 Elbow (Pitch)
   j3Group = new THREE.Group();
   j3Group.position.set(0, 1.8, 0);
   j2Group.add(j3Group);
@@ -196,7 +202,6 @@ function initThreeScene() {
   j3Arm.position.x = 0.7;
   j3Group.add(j3Arm);
 
-  // Weld Gun End-Effector
   weldGun = new THREE.Group();
   weldGun.position.set(1.4, 0, 0);
   j3Group.add(weldGun);
@@ -210,13 +215,11 @@ function initThreeScene() {
   electrode.position.y = -0.3;
   weldGun.add(electrode);
 
-  // BIW Sheet Panel Fixture Target
   const panelGeo = new THREE.BoxGeometry(1.6, 0.05, 1.4);
   const panel = new THREE.Mesh(panelGeo, new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.9 }));
   panel.position.set(1.8, 0.8, 0);
   scene.add(panel);
 
-  // Orbit Mouse Dragging
   let isDragging = false;
   let prevMouseX = 0;
   let prevMouseY = 0;
@@ -251,7 +254,6 @@ function onWindowResize() {
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
 
-// Sparks particle effect for spot weld
 function triggerSparks(x, y, z) {
   const pCount = 12;
   for (let i = 0; i < pCount; i++) {
@@ -285,7 +287,6 @@ function updateSparks() {
   }
 }
 
-// Main Render Loop
 function animate() {
   requestAnimationFrame(animate);
 
@@ -317,12 +318,12 @@ function animate() {
 }
 
 /* =========================================================
-   5. INTERACTIVE JOG CONTROLS & EVENT LISTENERS
+   5. CONTROLS, JOG & MODAL PRINT (FIXED!)
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   initPreloader();
   initMagneticCursor();
-  initLiveClock();
+  initScrollEngine();
   initThreeScene();
 
   // Jog sliders
@@ -361,46 +362,30 @@ document.addEventListener('DOMContentLoaded', () => {
     sJ3.value = -20;
   });
 
-  // Modal Resume
+  // Modal Resume & Fixed Print (Prints ONLY the resume iframe)
   const modal = document.getElementById('resume-modal');
   const openModal = document.getElementById('resume-open-btn');
   const closeModal = document.getElementById('resume-close-btn');
+  const printBtn = document.getElementById('modal-print-btn');
 
   if (openModal) openModal.addEventListener('click', () => modal.classList.add('open'));
   if (closeModal) closeModal.addEventListener('click', () => modal.classList.remove('open'));
 
-  // Initialize Journey & PLC logic
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      const iframe = document.getElementById('resume-iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print(); // Prints ONLY resume.html!
+      }
+    });
+  }
+
   showJourney(0);
-  updatePlcSimulation();
 });
 
 /* =========================================================
-   6. TWINCAT PLC SIMULATION ENGINE
-   ========================================================= */
-function updatePlcSimulation() {
-  const inPart = document.getElementById('plc-in-0').checked;
-  const inSafety = document.getElementById('plc-in-1').checked;
-  const inStart = document.getElementById('plc-in-2').checked;
-
-  const outInterlock = inPart && inSafety;
-  const outWeld = outInterlock && inStart;
-  const outHorn = outInterlock && inStart;
-
-  // Toggle Output LEDs
-  document.getElementById('led-out-0').classList.toggle('active', outInterlock);
-  document.getElementById('led-out-1').classList.toggle('active', outWeld);
-  document.getElementById('led-out-2').classList.toggle('active', outHorn);
-
-  // Highlight active variables in Structured Text
-  document.getElementById('st-part').classList.toggle('active-var', inPart);
-  document.getElementById('st-safety').classList.toggle('active-var', inSafety);
-  document.getElementById('st-start').classList.toggle('active-var', inStart);
-  document.getElementById('st-interlock').classList.toggle('active-var', outInterlock);
-  document.getElementById('st-weld').classList.toggle('active-var', outWeld);
-}
-
-/* =========================================================
-   7. INTERACTIVE JOURNEY DATA
+   6. JOURNEY DATA
    ========================================================= */
 const journeyData = [
   {
